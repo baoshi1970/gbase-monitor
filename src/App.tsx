@@ -11,7 +11,7 @@ import enUS from 'antd/locale/en_US';
 import jaJP from 'antd/locale/ja_JP';
 import { useTranslation } from 'react-i18next';
 import { Layout } from './components';
-import { Login, Dashboard, NotFound, ResolutionRate, NegativeFeedback, EscalationRate, QualityScore } from './pages';
+import { Login, Dashboard, NotFound, ResolutionRate, NegativeFeedback, EscalationRate, QualityScore, Overview } from './pages';
 import './locales';
 
 const App: React.FC = () => {
@@ -47,10 +47,7 @@ const App: React.FC = () => {
             </Route>
 
             {/* 概要总览 */}
-            <Route
-              path="overview/*"
-              element={<div>概要总览页面开发中...</div>}
-            />
+            <Route path="overview" element={<Overview />} />
 
             {/* 用户行为分析 */}
             <Route

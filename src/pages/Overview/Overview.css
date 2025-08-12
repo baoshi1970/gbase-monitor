@@ -1,0 +1,217 @@
+.overview-container {
+  padding: 24px;
+  background: #f5f5f5;
+  min-height: calc(100vh - 64px);
+}
+
+.overview-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 24px;
+  padding: 24px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.page-icon {
+  margin-right: 8px;
+  color: #1890ff;
+}
+
+.overview-metrics {
+  margin-bottom: 24px;
+}
+
+.metric-card {
+  height: 140px;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  overflow: hidden;
+  position: relative;
+}
+
+.metric-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(90deg, #1890ff, #722ed1);
+}
+
+.metric-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.15);
+}
+
+.health-card::before {
+  background: linear-gradient(90deg, #52c41a, #73d13d);
+}
+
+.uptime-card::before {
+  background: linear-gradient(90deg, #1890ff, #40a9ff);
+}
+
+.quality-card::before {
+  background: linear-gradient(90deg, #722ed1, #b37feb);
+}
+
+.alert-card::before {
+  background: linear-gradient(90deg, #fa8c16, #ffa940);
+}
+
+.metric-status,
+.metric-trend,
+.metric-change {
+  margin-top: 8px;
+}
+
+.alert-breakdown {
+  margin-top: 8px;
+}
+
+.overview-monitoring,
+.overview-charts,
+.overview-resources {
+  margin-bottom: 24px;
+}
+
+.monitoring-card,
+.services-card,
+.trend-card,
+.alerts-card,
+.resources-card {
+  height: 400px;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
+
+.monitoring-card .ant-card-body,
+.services-card .ant-card-body,
+.trend-card .ant-card-body,
+.alerts-card .ant-card-body {
+  height: calc(100% - 56px);
+  padding-bottom: 0;
+}
+
+.resources-card {
+  height: auto;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
+
+.resource-item {
+  padding: 16px;
+  background: #fafafa;
+  border-radius: 8px;
+  border: 1px solid #f0f0f0;
+  transition: all 0.2s ease;
+}
+
+.resource-item:hover {
+  background: #f0f7ff;
+  border-color: #d6e4ff;
+}
+
+.resource-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.ant-statistic-title {
+  font-size: 14px !important;
+  color: #8c8c8c !important;
+  margin-bottom: 8px !important;
+}
+
+.ant-statistic-content {
+  font-size: 32px !important;
+  font-weight: 600 !important;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .overview-container {
+    padding: 16px;
+  }
+  
+  .overview-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  
+  .metric-card {
+    height: 120px;
+  }
+  
+  .ant-statistic-content {
+    font-size: 24px !important;
+  }
+  
+  .monitoring-card,
+  .services-card,
+  .trend-card,
+  .alerts-card {
+    height: auto;
+  }
+}
+
+@media (max-width: 576px) {
+  .overview-header {
+    padding: 16px;
+  }
+  
+  .metric-card {
+    height: 100px;
+  }
+  
+  .ant-statistic-content {
+    font-size: 20px !important;
+  }
+}
+
+/* 动画效果 */
+.overview-container .ant-card {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 加载状态 */
+.ant-spin-spinning {
+  .metric-card,
+  .monitoring-card,
+  .services-card,
+  .trend-card,
+  .alerts-card,
+  .resources-card {
+    opacity: 0.7;
+  }
+}
+
+/* 状态指示器样式 */
+.ant-badge-status-dot {
+  width: 8px;
+  height: 8px;
+}
+
+.ant-badge-status-text {
+  margin-left: 8px;
+  color: #595959;
+}
