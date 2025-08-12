@@ -1,0 +1,56 @@
+根据已知信息，以下是GBase系统中所有API的列表，涵盖了AI、数据集、问题、数字人等相关模块，具体如下：
+域名：https://docs.gbase.ai
+
+**GBase AI相关API：**
+- GET 获取AI信息（Get AI）：/v1/ais/{ai_id}
+- DEL 删除AI（Delete AI）：/v1/ais/{ai_id}
+- PATCH 更新AI（Update AI）：/v1/ais/{ai_id}
+- GET 获取AI列表（Get AIs）：/v1/ais
+- POST 生成提示词（generate prompt）：/v1/ais/generate-prompt
+- PUT 生成提示词（generate prompt）：/v1/ais/generate-prompt-1
+
+**参考资料相关API：**
+- GET 获取参考资料（Get References）：/v1/references
+
+**问题相关API：**
+- POST 提问（Ask Question）：/v1/question/{ai_id}
+- GET 获取会话消息（Get Session Messages）：/v1/{ai_id}/session.messages
+- DEL 删除会话消息（Delete Session Messages）：/v1/{ai_id}/session.messages
+- PATCH 消息评价（Message Rating）：/v1/{ai_id}/session.messages
+- POST 推荐翻译（Ask Recommend Translation）：/v1/question/ask-recommend-translation
+- PATCH 设置消息画布URL（Set Message Canvas Url）：/v1/question/set-message-canvas-url
+
+**问题消息相关API：**
+- GET 获取单条消息（Get Message）：/v1/{ai_id}/session.messages/{message_id}
+
+**API参考相关：**
+- GET 获取Azure语音识别Token（Get Azure Stt Token）：/v1/azure-stt-token
+
+**数据集相关API：**
+- GET 获取数据集列表（Get datasets）：/v1/datasets
+- POST 创建数据集（Create dataset）：/v1/datasets
+- GET 获取单个数据集（Get dataset）：/v1/datasets/{dataset_id}
+- PUT 更新数据集（Update dataset）：/v1/datasets/{dataset_id}
+- DEL 删除数据集（Delete dataset）：/v1/datasets/{dataset_id}
+- GET 获取数据集文件数量（Get dataset files counts）：/v1/datasets/{dataset_id}/files-counts
+- GET 获取数据集文件列表（Get dataset files）：/v1/datasets/{dataset_id}/files
+- PUT 更新数据集文件（Update dataset file）：/v1/datasets/{dataset_id}/files
+- POST 向数据集添加文件（Add file to dataset）：/v1/datasets/{dataset_id}/files
+- DEL 删除数据集文件（Delete dataset file）：/v1/datasets/{dataset_id}/files/{file_id}
+- PUT 刷新数据集文件列表（Refresh dataset file list）：/v1/datasets/{dataset_id}/files/refresh
+- PUT 刷新数据集上传文件列表（Refresh dataset upload file list）：/v1/datasets/{dataset_id}/upload-files/refresh
+- GET 获取数据集文件分块（Get dataset file chunks）：/v1/datasets/{dataset_id}/files/chunks
+- POST 向数据集添加链接（Add link to dataset）：/v1/datasets/{dataset_id}/links
+- POST 更新数据集配置（Update Dataset Configs）：/v1/datasets/{dataset_id}/configs
+- POST 绑定数据集到AI（Bind dataset to ai）：/v1/datasets/{dataset_id}/bind-ai
+- DEL 解绑数据集与AI（Unbind dataset to ai）：/v1/datasets/{dataset_id}/unbind-ai
+- GET 获取AI绑定的数据集（Get ai datasets）：/v1/datasets/{ai_id}/datasets
+- POST 通过appid、app secret和分享链接添加Lark文件到数据集（Add Lark files to dataset by appid, app secret and share urls）：/v1/datasets/{dataset_id}/lark-files
+- GET 获取集成规则（get integration rules）：/v1/datasets/{dataset_id}/integrations
+
+**数字人相关API：**
+- GET 欢迎消息（Welcome Message）：/v1/digital-human/welcome-message
+- POST 聊天代理（Chat Agent）：/v1/digital-human/chat-agent
+- POST 聊天代理运行时（Chat Agent Runtime）：/v1/digital-human/chat-agent-runtime
+
+如需了解每个API的详细用法和参数，可参考官方文档：https://docs.gbase.ai/api-reference/

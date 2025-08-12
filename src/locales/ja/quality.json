@@ -1,0 +1,40 @@
+{
+  "title": "対話品質指標",
+  "metrics": {
+    "resolutionRate": "セッション解決率",
+    "negativeFeedbackRate": "ネガティブフィードバック率",
+    "escalationRate": "人間エスカレーション率",
+    "noAnswerRate": "無回答応答率",
+    "qualityScore": "総合品質スコア"
+  },
+  "stats": {
+    "current": "現在値",
+    "target": "目標値",
+    "trend": "トレンド",
+    "change": "変化",
+    "improved": "改善",
+    "declined": "低下",
+    "stable": "安定"
+  },
+  "timeRange": {
+    "realtime": "リアルタイム",
+    "today": "今日",
+    "yesterday": "昨日",
+    "last7days": "過去7日間",
+    "last30days": "過去30日間",
+    "lastMonth": "先月",
+    "custom": "カスタム"
+  },
+  "categories": {
+    "technical": "技術的問題",
+    "business": "ビジネス相談",
+    "product": "製品使用",
+    "other": "その他"
+  },
+  "analysis": {
+    "regionComparison": "地域比較",
+    "categoryBreakdown": "カテゴリー分析",
+    "trendAnalysis": "トレンド分析",
+    "correlationAnalysis": "相関分析"
+  }
+}

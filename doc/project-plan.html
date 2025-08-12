@@ -1,0 +1,1268 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GBase AI サービス監視プラットフォーム 開発計画書</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #64748b;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --error-color: #ef4444;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-color: #1e293b;
+            --border-color: #e2e8f0;
+            --shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            --gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Hiragino Kaku Gothic ProN', 'ヒラギノ角ゴ ProN W3', 'Meiryo', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .header {
+            background: var(--gradient);
+            color: white;
+            padding: 2rem 0;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            font-size: 2.2rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .header-subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .nav-menu {
+            position: sticky;
+            top: 0;
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+            z-index: 100;
+        }
+
+        .nav-menu ul {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            list-style: none;
+        }
+
+        .nav-menu a {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            color: var(--text-color);
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .nav-menu a:hover {
+            background: var(--bg-color);
+            color: var(--primary-color);
+        }
+
+        .section {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .section h2 {
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .section h3 {
+            font-size: 1.4rem;
+            color: var(--text-color);
+            margin: 1.5rem 0 1rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .section h4 {
+            font-size: 1.2rem;
+            color: var(--secondary-color);
+            margin: 1rem 0 0.5rem 0;
+        }
+
+        .priority-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+        }
+
+        .priority-p0 {
+            background: #fef2f2;
+            color: #991b1b;
+        }
+
+        .priority-p1 {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .priority-p2 {
+            background: #f0fdf4;
+            color: #166534;
+        }
+
+        .module-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .module-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .module-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient);
+        }
+
+        .module-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .module-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            color: white;
+            background: var(--gradient);
+        }
+
+        .module-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        .feature-list {
+            list-style: none;
+            margin: 1rem 0;
+        }
+
+        .feature-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .feature-list li:last-child {
+            border-bottom: none;
+        }
+
+        .feature-list i {
+            color: var(--success-color);
+            margin-top: 0.2rem;
+        }
+
+        .timeline {
+            position: relative;
+            padding: 2rem 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 30px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--primary-color);
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-left: 4rem;
+            margin-bottom: 2rem;
+        }
+
+        .timeline-icon {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 60px;
+            height: 60px;
+            background: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            box-shadow: var(--shadow);
+        }
+
+        .timeline-content {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+        }
+
+        .timeline-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-subtitle {
+            color: var(--secondary-color);
+            margin-bottom: 1rem;
+        }
+
+        .week-plan {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .week-item {
+            background: var(--bg-color);
+            border-radius: 8px;
+            padding: 1rem;
+            border-left: 3px solid var(--success-color);
+        }
+
+        .week-item h5 {
+            font-weight: 600;
+            color: var(--text-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .api-code {
+            background: #1e293b;
+            color: #e2e8f0;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+        }
+
+        .api-code .keyword {
+            color: #60a5fa;
+        }
+
+        .api-code .string {
+            color: #34d399;
+        }
+
+        .api-code .comment {
+            color: #9ca3af;
+        }
+
+        .risk-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .risk-item {
+            border-radius: 12px;
+            padding: 1.5rem;
+            border-left: 4px solid;
+        }
+
+        .risk-high {
+            background: #fef2f2;
+            border-color: var(--error-color);
+        }
+
+        .risk-medium {
+            background: #fffbeb;
+            border-color: var(--warning-color);
+        }
+
+        .risk-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .risk-high .risk-title {
+            color: #991b1b;
+        }
+
+        .risk-medium .risk-title {
+            color: #92400e;
+        }
+
+        .risk-level {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+        }
+
+        .level-high {
+            background: var(--error-color);
+            color: white;
+        }
+
+        .level-medium {
+            background: var(--warning-color);
+            color: white;
+        }
+
+        .steps-list {
+            background: var(--bg-color);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+
+        .steps-list ol {
+            padding-left: 1.5rem;
+        }
+
+        .steps-list li {
+            margin: 0.5rem 0;
+        }
+
+        .tech-architecture {
+            background: #1e293b;
+            color: #e2e8f0;
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+        }
+
+        .constraint-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .constraint-item {
+            background: var(--bg-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            border-left: 3px solid var(--secondary-color);
+        }
+
+        .constraint-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-color);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .metric-item {
+            text-align: center;
+            background: var(--bg-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+        }
+
+        .metric-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .metric-label {
+            color: var(--secondary-color);
+            font-size: 0.9rem;
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 50px;
+            height: 50px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .back-to-top:hover {
+            background: #1d4ed8;
+            transform: translateY(-2px);
+        }
+
+        .toc {
+            background: var(--bg-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .toc h3 {
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+
+        .toc ul {
+            list-style: none;
+            padding-left: 1rem;
+        }
+
+        .toc li {
+            margin: 0.5rem 0;
+        }
+
+        .toc a {
+            color: var(--text-color);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .toc a:hover {
+            color: var(--primary-color);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 15px;
+            }
+
+            .header h1 {
+                font-size: 1.8rem;
+            }
+
+            .nav-menu ul {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .module-grid,
+            .risk-grid,
+            .constraint-grid,
+            .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .timeline::before {
+                left: 15px;
+            }
+
+            .timeline-item {
+                padding-left: 3rem;
+            }
+
+            .timeline-icon {
+                width: 40px;
+                height: 40px;
+                font-size: 1rem;
+            }
+
+            .week-plan {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .status-completed {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .status-progress {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .status-pending {
+            background: #f1f5f9;
+            color: #475569;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="container">
+            <h1><i class="fas fa-rocket"></i>GBase AI サービス監視プラットフォーム 開発計画書</h1>
+            <div class="header-subtitle">対話品質を核心とした統合監視システムの完全実装計画</div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- 目次 -->
+        <div class="toc">
+            <h3><i class="fas fa-list"></i> 目次</h3>
+            <ul>
+                <li><a href="#overview">📋 项目概览</a></li>
+                <li><a href="#phase1">🎯 第一阶段：対話品質指標</a></li>
+                <li><a href="#phase2">📊 第二阶段：概要ダッシュボード</a></li>
+                <li><a href="#phase3">👥 第三阶段：ユーザー行動分析</a></li>
+                <li><a href="#phase4">📋 第四阶段：レポート</a></li>
+                <li><a href="#timeline">📅 里程碑计划</a></li>
+                <li><a href="#risks">⚠️ 风险分析与对策</a></li>
+                <li><a href="#constraints">🔒 约束条件</a></li>
+                <li><a href="#architecture">🏗️ 技术架构设计</a></li>
+                <li><a href="#environment">🌐 外部环境需求</a></li>
+                <li><a href="#success">📈 成功标准</a></li>
+            </ul>
+        </div>
+
+        <!-- 导航菜单 -->
+        <nav class="nav-menu">
+            <ul>
+                <li><a href="#overview"><i class="fas fa-info-circle"></i>概览</a></li>
+                <li><a href="#phase1"><i class="fas fa-star"></i>対話品質</a></li>
+                <li><a href="#phase2"><i class="fas fa-tachometer-alt"></i>ダッシュボード</a></li>
+                <li><a href="#phase3"><i class="fas fa-users"></i>ユーザー分析</a></li>
+                <li><a href="#phase4"><i class="fas fa-file-alt"></i>レポート</a></li>
+                <li><a href="#timeline"><i class="fas fa-calendar"></i>计划</a></li>
+                <li><a href="#risks"><i class="fas fa-exclamation-triangle"></i>风险</a></li>
+                <li><a href="#architecture"><i class="fas fa-sitemap"></i>架构</a></li>
+            </ul>
+        </nav>
+
+        <!-- 项目概览 -->
+        <div id="overview" class="section">
+            <h2><i class="fas fa-info-circle"></i>项目概览</h2>
+            
+            <h3>系统定位</h3>
+            <p>专注于AI对话服务的质量监控和用户行为分析平台，与其他系统（AI模型监控、性能监控、告警管理）形成清晰分工。</p>
+            
+            <h3>核心模块</h3>
+            <div class="module-grid">
+                <div class="module-card">
+                    <div class="module-header">
+                        <div class="module-icon"><i class="fas fa-star"></i></div>
+                        <span class="priority-badge priority-p0">P0 - 1个月</span>
+                    </div>
+                    <div class="module-title">🌟 対話品質指標</div>
+                    <p>北极星指标Session解決率为核心，全面监控对话质量</p>
+                </div>
+                
+                <div class="module-card">
+                    <div class="module-header">
+                        <div class="module-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <span class="priority-badge priority-p1">P1</span>
+                    </div>
+                    <div class="module-title">📊 概要ダッシュボード</div>
+                    <p>系统总览，关键指标汇总展示</p>
+                </div>
+                
+                <div class="module-card">
+                    <div class="module-header">
+                        <div class="module-icon"><i class="fas fa-users"></i></div>
+                        <span class="priority-badge priority-p1">P1</span>
+                    </div>
+                    <div class="module-title">👥 ユーザー行動分析</div>
+                    <p>邮件域名分析，关键客户增长追踪</p>
+                </div>
+                
+                <div class="module-card">
+                    <div class="module-header">
+                        <div class="module-icon"><i class="fas fa-file-alt"></i></div>
+                        <span class="priority-badge priority-p2">P2</span>
+                    </div>
+                    <div class="module-title">📋 レポート</div>
+                    <p>自动化报告生成和管理</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 第一阶段：対話品質指標 -->
+        <div id="phase1" class="section">
+            <h2><i class="fas fa-star"></i>第一阶段：対話品質指標 <span class="priority-badge priority-p0">1个月冲刺</span></h2>
+            
+            <h3>功能需求列表</h3>
+            
+            <h4>1.1 核心质量指标</h4>
+            <ul class="feature-list">
+                <li><i class="fas fa-check-circle"></i><strong>北极星指标：Session解決率</strong>
+                    <ul style="margin-left: 2rem; margin-top: 0.5rem;">
+                        <li>• 实时计算和展示 (87.3% 目标值)</li>
+                        <li>• 趋势分析 (24小时、7天、30天)</li>
+                        <li>• 分类别解决率 (技术问题、商务咨询、产品使用等)</li>
+                        <li>• 地域对比分析</li>
+                    </ul>
+                </li>
+                <li><i class="fas fa-check-circle"></i><strong>负反馈率监控</strong> (目标: <5%)</li>
+                <li><i class="fas fa-check-circle"></i><strong>人工转接率分析</strong> - AI处理能力边界识别</li>
+                <li><i class="fas fa-check-circle"></i><strong>无答案回复率</strong> - 知识库覆盖度评估</li>
+            </ul>
+
+            <h4>1.2 高级分析功能</h4>
+            <ul class="feature-list">
+                <li><i class="fas fa-cog"></i>对话质量得分算法</li>
+                <li><i class="fas fa-chart-line"></i>多维度相关性分析</li>
+                <li><i class="fas fa-brain"></i>质量趋势预测模型</li>
+                <li><i class="fas fa-bell"></i>异常检测和告警</li>
+            </ul>
+
+            <h3>API接口设计</h3>
+
+            <h4>1.2.1 核心指标接口</h4>
+            <div class="api-code">
+<span class="comment">// 获取Session解决率</span>
+<span class="keyword">GET</span> <span class="string">/api/v1/quality/resolution-rate</span>
+<span class="keyword">Query:</span> timeRange, category, region
+<span class="keyword">Response:</span> {
+  current: number,
+  trend: number[],
+  breakdown: CategoryBreakdown[]
+}
+
+<span class="comment">// 获取负反馈数据</span>
+<span class="keyword">GET</span> <span class="string">/api/v1/quality/negative-feedback</span>
+<span class="keyword">Query:</span> timeRange, reason
+<span class="keyword">Response:</span> {
+  rate: number,
+  reasons: ReasonStats[],
+  timeline: TimelineData[]
+}
+
+<span class="comment">// 综合质量得分</span>
+<span class="keyword">GET</span> <span class="string">/api/v1/quality/score</span>
+<span class="keyword">Response:</span> {
+  score: number,
+  components: ScoreComponent[],
+  trend: TrendData[]
+}
+            </div>
+
+            <h4>1.2.2 实时数据推送</h4>
+            <div class="api-code">
+<span class="comment">// WebSocket连接</span>
+<span class="keyword">WS</span> <span class="string">/ws/quality/realtime</span>
+<span class="keyword">Events:</span>
+- resolution_rate_update
+- feedback_received  
+- escalation_event
+- quality_alert
+            </div>
+
+            <h3>实施步骤 (4周计划)</h3>
+            <div class="week-plan">
+                <div class="week-item">
+                    <h5>Week 1: 数据基础</h5>
+                    <ul>
+                        <li>数据模型设计</li>
+                        <li>核心指标计算</li>
+                        <li>基础API开发</li>
+                        <li>数据收集管道</li>
+                    </ul>
+                </div>
+                
+                <div class="week-item">
+                    <h5>Week 2: 前端核心</h5>
+                    <ul>
+                        <li>北极星指标展示</li>
+                        <li>实时图表开发</li>
+                        <li>负反馈率显示</li>
+                        <li>基础筛选功能</li>
+                    </ul>
+                </div>
+                
+                <div class="week-item">
+                    <h5>Week 3: 高级功能</h5>
+                    <ul>
+                        <li>质量得分算法</li>
+                        <li>相关性分析</li>
+                        <li>异常检测逻辑</li>
+                        <li>实时推送功能</li>
+                    </ul>
+                </div>
+                
+                <div class="week-item">
+                    <h5>Week 4: 优化上线</h5>
+                    <ul>
+                        <li>性能优化</li>
+                        <li>全面测试</li>
+                        <li>用户体验优化</li>
+                        <li>上线部署</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- 第二阶段：概要ダッシュボード -->
+        <div id="phase2" class="section">
+            <h2><i class="fas fa-tachometer-alt"></i>第二阶段：概要ダッシュボード</h2>
+            
+            <h3>功能需求列表</h3>
+            <ul class="feature-list">
+                <li><i class="fas fa-users"></i><strong>用户活跃度指标</strong> - DAU/MAU统计，用户增长趋势</li>
+                <li><i class="fas fa-heartbeat"></i><strong>系统健康状况</strong> - 服务可用性99.97%，响应时间156ms</li>
+                <li><i class="fas fa-chart-area"></i><strong>实时监控面板</strong> - 对话量统计，状态总览</li>
+                <li><i class="fas fa-bell"></i><strong>重要告警汇总</strong> - 关键问题快速识别</li>
+            </ul>
+
+            <h3>API接口设计</h3>
+            <div class="api-code">
+<span class="comment">// 获取总览数据</span>
+<span class="keyword">GET</span> <span class="string">/api/v1/overview/summary</span>
+<span class="keyword">Response:</span> {
+  activeUsers: number,
+  responseTime: number,  
+  uptime: number,
+  satisfaction: number
+}
+
+<span class="comment">// 获取实时对话数据</span>
+<span class="keyword">GET</span> <span class="string">/api/v1/overview/conversations/realtime</span>
+<span class="keyword">Query:</span> timeRange
+<span class="keyword">Response:</span> ConversationStats[]
+            </div>
+        </div>
+
+        <!-- 第三阶段：ユーザー行動分析 -->
+        <div id="phase3" class="section">
+            <h2><i class="fas fa-users"></i>第三阶段：ユーザー行動分析</h2>
+            
+            <h3>功能需求列表</h3>
+            <ul class="feature-list">
+                <li><i class="fas fa-envelope"></i><strong>邮件域名分析</strong> - 企业域名识别，行业分类逻辑</li>
+                <li><i class="fas fa-star"></i><strong>关键客户追踪</strong> - 企业客户成长监控，流失风险预警</li>
+                <li><i class="fas fa-brain"></i><strong>行为模式分析</strong> - 用户分群算法，使用时间分析</li>
+            </ul>
+
+            <h3>API接口设计</h3>
+            <div class="api-code">
+<span class="comment">// 域名分析</span>
+<span class="keyword">GET</span> <span class="string">/api/v1/users/domain-analysis</span>
+<span class="keyword">Response:</span> {
+  corporate: DomainStats,
+  freemail: DomainStats,
+  education: DomainStats,
+  government: DomainStats
+}
+
+<span class="comment">// 关键客户数据</span>
+<span class="keyword">GET</span> <span class="string">/api/v1/users/key-customers</span>
+<span class="keyword">Response:</span> {
+  enterprises: EnterpriseCustomer[],
+  growth: GrowthMetrics,
+  risks: RiskCustomer[]
+}
+            </div>
+        </div>
+
+        <!-- 第四阶段：レポート -->
+        <div id="phase4" class="section">
+            <h2><i class="fas fa-file-alt"></i>第四阶段：レポート</h2>
+            
+            <h3>功能需求列表</h3>
+            <ul class="feature-list">
+                <li><i class="fas fa-calendar-day"></i><strong>自动化报告</strong> - 日次运营、周次分析、AI效果报告</li>
+                <li><i class="fas fa-cogs"></i><strong>报告管理</strong> - 模板管理、定时生成、历史管理</li>
+                <li><i class="fas fa-download"></i><strong>导出功能</strong> - 多格式导出支持</li>
+            </ul>
+        </div>
+
+        <!-- 里程碑计划 -->
+        <div id="timeline" class="section">
+            <h2><i class="fas fa-calendar"></i>里程碑计划</h2>
+            
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-icon"><i class="fas fa-star"></i></div>
+                    <div class="timeline-content">
+                        <div class="timeline-title">Phase 1: 対話品質指標 <span class="status-badge status-progress">进行中</span></div>
+                        <div class="timeline-subtitle">Month 1 - 核心质量监控系统</div>
+                        <div class="week-plan">
+                            <div class="week-item">Week 1: 数据架构和API基础 <span class="status-badge status-completed">✅</span></div>
+                            <div class="week-item">Week 2: 前端核心功能开发 <span class="status-badge status-progress">⏳</span></div>
+                            <div class="week-item">Week 3: 高级分析功能 <span class="status-badge status-pending">🔄</span></div>
+                            <div class="week-item">Week 4: 测试优化上线 <span class="status-badge status-pending">📋</span></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-icon"><i class="fas fa-tachometer-alt"></i></div>
+                    <div class="timeline-content">
+                        <div class="timeline-title">Phase 2: 概要ダッシュボード</div>
+                        <div class="timeline-subtitle">Month 2 - 综合监控面板</div>
+                        <p>Week 5-6: 指标统计和展示<br>Week 7-8: 实时监控和优化</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-icon"><i class="fas fa-users"></i></div>
+                    <div class="timeline-content">
+                        <div class="timeline-title">Phase 3: ユーザー行動分析</div>
+                        <div class="timeline-subtitle">Month 3 - 深度用户洞察</div>
+                        <p>Week 9-10: 邮件域名分析<br>Week 11-12: 关键客户追踪</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-icon"><i class="fas fa-file-alt"></i></div>
+                    <div class="timeline-content">
+                        <div class="timeline-title">Phase 4: レポート</div>
+                        <div class="timeline-subtitle">Month 4 - 智能报告系统</div>
+                        <p>Week 13-14: 报告生成引擎<br>Week 15-16: 管理界面和优化</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 风险分析 -->
+        <div id="risks" class="section">
+            <h2><i class="fas fa-exclamation-triangle"></i>风险分析与对策</h2>
+            
+            <div class="risk-grid">
+                <div class="risk-item risk-high">
+                    <div class="risk-title">
+                        <i class="fas fa-database"></i>数据质量和完整性风险
+                        <span class="risk-level level-high">高风险</span>
+                    </div>
+                    <p><strong>风险描述</strong>: 对话数据可能存在缺失、延迟或格式不一致</p>
+                    <p><strong>影响程度</strong>: 直接影响指标准确性</p>
+                    <div class="steps-list">
+                        <strong>对策：</strong>
+                        <ol>
+                            <li>实施数据验证和清洗管道</li>
+                            <li>建立数据质量监控告警</li>
+                            <li>设计降级策略和默认值处理</li>
+                            <li>建立数据回填机制</li>
+                        </ol>
+                    </div>
+                </div>
+                
+                <div class="risk-item risk-high">
+                    <div class="risk-title">
+                        <i class="fas fa-tachometer-alt"></i>实时计算性能风险
+                        <span class="risk-level level-high">中高风险</span>
+                    </div>
+                    <p><strong>风险描述</strong>: 大量实时数据计算可能导致系统延迟</p>
+                    <p><strong>影响程度</strong>: 影响用户体验</p>
+                    <div class="steps-list">
+                        <strong>对策：</strong>
+                        <ol>
+                            <li>采用流式计算架构 (Apache Kafka + Stream)</li>
+                            <li>实施多级缓存策略 (Redis + CDN)</li>
+                            <li>设计预聚合数据表</li>
+                            <li>实现异步计算任务</li>
+                        </ol>
+                    </div>
+                </div>
+                
+                <div class="risk-item risk-high">
+                    <div class="risk-title">
+                        <i class="fas fa-plug"></i>API依赖风险
+                        <span class="risk-level level-high">高风险</span>
+                    </div>
+                    <p><strong>风险描述</strong>: 依赖外部对话系统API可能不稳定</p>
+                    <p><strong>影响程度</strong>: 影响核心功能</p>
+                    <div class="steps-list">
+                        <strong>对策：</strong>
+                        <ol>
+                            <li>实现API熔断和重试机制</li>
+                            <li>设计本地数据缓存</li>
+                            <li>建立多数据源备份</li>
+                            <li>建立API健康检查</li>
+                        </ol>
+                    </div>
+                </div>
+                
+                <div class="risk-item risk-medium">
+                    <div class="risk-title">
+                        <i class="fas fa-shield-alt"></i>用户隐私合规风险
+                        <span class="risk-level level-medium">中风险</span>
+                    </div>
+                    <p><strong>风险描述</strong>: 用户数据分析可能涉及隐私保护要求</p>
+                    <div class="steps-list">
+                        <strong>对策：</strong>
+                        <ol>
+                            <li>实施数据脱敏和匿名化</li>
+                            <li>遵循GDPR和相关法规</li>
+                            <li>用户数据最小化原则</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 约束条件 -->
+        <div id="constraints" class="section">
+            <h2><i class="fas fa-lock"></i>约束条件</h2>
+            
+            <div class="constraint-grid">
+                <div class="constraint-item">
+                    <div class="constraint-title">
+                        <i class="fas fa-code"></i>技术约束
+                    </div>
+                    <ul>
+                        <li>依赖现有对话系统数据格式</li>
+                        <li>核心指标需要5分钟内更新</li>
+                        <li>支持100+管理员同时使用</li>
+                        <li>历史数据至少保留12个月</li>
+                    </ul>
+                </div>
+                
+                <div class="constraint-item">
+                    <div class="constraint-title">
+                        <i class="fas fa-users"></i>资源约束
+                    </div>
+                    <ul>
+                        <li>预计需要3-5名开发人员</li>
+                        <li>4个月完整交付</li>
+                        <li>需要专用数据库和缓存服务器</li>
+                        <li>可能需要图表库和数据可视化工具</li>
+                    </ul>
+                </div>
+                
+                <div class="constraint-item">
+                    <div class="constraint-title">
+                        <i class="fas fa-building"></i>业务约束
+                    </div>
+                    <ul>
+                        <li>需要与现有用户系统集成</li>
+                        <li>遵循企业数据安全标准</li>
+                        <li>需要与其他监控系统协调</li>
+                        <li>支持中文和日文界面</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- 技术架构 -->
+        <div id="architecture" class="section">
+            <h2><i class="fas fa-sitemap"></i>技术架构设计</h2>
+            
+            <h3>后端架构</h3>
+            <div class="tech-architecture">
+┌─────────────────┐    ┌──────────────────┐    ┌─────────────────┐
+│   Data Sources  │───▶│  Data Pipeline   │───▶│   Data Storage  │
+│ - 对话系统 API   │    │ - ETL Process    │    │ - PostgreSQL    │
+│ - 用户行为日志   │    │ - Stream Proc.   │    │ - Redis Cache   │
+│ - 邮件域名库     │    │ - Data Clean     │    │ - InfluxDB      │
+└─────────────────┘    └──────────────────┘    └─────────────────┘
+                                   │
+                       ┌──────────────────┐
+                       │   API Gateway    │
+                       │ - Authentication │  
+                       │ - Rate Limiting  │
+                       │ - Load Balancer  │
+                       └──────────────────┘
+            </div>
+            
+            <h3>前端架构</h3>
+            <div class="tech-architecture">
+┌─────────────────┐    ┌──────────────────┐    ┌─────────────────┐
+│   React/Vue.js  │───▶│   State Manage   │───▶│   API Client    │
+│ - Dashboard UI  │    │ - Redux/Vuex     │    │ - Axios/Fetch   │
+│ - Chart.js      │    │ - WebSocket      │    │ - WebSocket     │
+│ - Antd/Element  │    │ - Real-time      │    │ - Error Handle  │
+└─────────────────┘    └──────────────────┘    └─────────────────┘
+            </div>
+        </div>
+
+        <!-- 外部环境需求 -->
+        <div id="environment" class="section">
+            <h2><i class="fas fa-server"></i>外部环境需求</h2>
+            
+            <div class="constraint-grid">
+                <div class="constraint-item">
+                    <div class="constraint-title">
+                        <i class="fas fa-laptop-code"></i>开发环境
+                    </div>
+                    <ul>
+                        <li>Linux Ubuntu 20.04+ / CentOS 8+</li>
+                        <li>Node.js v16.x 以上</li>
+                        <li>PostgreSQL 13+, Redis 6+</li>
+                        <li>Apache Kafka 2.8+ (可选)</li>
+                        <li>Docker + Docker Compose</li>
+                    </ul>
+                </div>
+                
+                <div class="constraint-item">
+                    <div class="constraint-title">
+                        <i class="fas fa-cloud"></i>生产环境
+                    </div>
+                    <ul>
+                        <li>API服务器: 8核CPU, 16GB内存</li>
+                        <li>数据库服务器: 16核CPU, 32GB内存</li>
+                        <li>缓存服务器: 4核CPU, 8GB内存</li>
+                        <li>网络: 带宽100Mbps+, 低延迟</li>
+                        <li>监控: Prometheus + Grafana</li>
+                    </ul>
+                </div>
+                
+                <div class="constraint-item">
+                    <div class="constraint-title">
+                        <i class="fas fa-puzzle-piece"></i>第三方服务
+                    </div>
+                    <ul>
+                        <li>邮件域名库服务 (Clearbit等)</li>
+                        <li>图表库: Chart.js, D3.js, ECharts</li>
+                        <li>CDN: 静态资源加速服务</li>
+                        <li>SSL证书: HTTPS安全连接</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- 成功标准 -->
+        <div id="success" class="section">
+            <h2><i class="fas fa-trophy"></i>成功标准</h2>
+            
+            <h3>技术指标</h3>
+            <div class="metrics-grid">
+                <div class="metric-item">
+                    <div class="metric-value">99.9%+</div>
+                    <div class="metric-label">系统可用性</div>
+                </div>
+                <div class="metric-item">
+                    <div class="metric-value">&lt;500ms</div>
+                    <div class="metric-label">API响应时间 P95</div>
+                </div>
+                <div class="metric-item">
+                    <div class="metric-value">&lt;3秒</div>
+                    <div class="metric-label">前端首屏加载</div>
+                </div>
+                <div class="metric-item">
+                    <div class="metric-value">99.5%+</div>
+                    <div class="metric-label">数据准确性</div>
+                </div>
+            </div>
+            
+            <h3>业务指标</h3>
+            <div class="metrics-grid">
+                <div class="metric-item">
+                    <div class="metric-value">90%+</div>
+                    <div class="metric-label">管理员活跃使用率</div>
+                </div>
+                <div class="metric-item">
+                    <div class="metric-value">5+</div>
+                    <div class="metric-label">每周业务洞察数</div>
+                </div>
+                <div class="metric-item">
+                    <div class="metric-value">50%</div>
+                    <div class="metric-label">决策效率提升</div>
+                </div>
+                <div class="metric-item">
+                    <div class="metric-value">2小时</div>
+                    <div class="metric-label">问题提前发现</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 项目信息 -->
+        <div class="section">
+            <h2><i class="fas fa-info"></i>项目信息</h2>
+            <div class="constraint-grid">
+                <div class="constraint-item">
+                    <div class="constraint-title">
+                        <i class="fas fa-calendar"></i>时间信息
+                    </div>
+                    <ul>
+                        <li><strong>创建日期</strong>: 2025-01-06</li>
+                        <li><strong>最后更新</strong>: 2025-01-06</li>
+                        <li><strong>项目周期</strong>: 4个月</li>
+                        <li><strong>版本</strong>: v1.0</li>
+                    </ul>
+                </div>
+                
+                <div class="constraint-item">
+                    <div class="constraint-title">
+                        <i class="fas fa-user"></i>项目团队
+                    </div>
+                    <ul>
+                        <li><strong>项目负责人</strong>: [待定]</li>
+                        <li><strong>开发团队</strong>: 3-5人</li>
+                        <li><strong>设计师</strong>: 1人</li>
+                        <li><strong>测试工程师</strong>: 1人</li>
+                    </ul>
+                </div>
+                
+                <div class="constraint-item">
+                    <div class="constraint-title">
+                        <i class="fas fa-rocket"></i>后续优化
+                    </div>
+                    <ul>
+                        <li>AI智能分析和预测</li>
+                        <li>更丰富的数据可视化</li>
+                        <li>移动端适配</li>
+                        <li>机器学习模型集成</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 返回顶部按钮 -->
+    <button class="back-to-top" id="backToTop">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+
+    <script>
+        // 返回顶部功能
+        const backToTopButton = document.getElementById('backToTop');
+        
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTopButton.classList.add('visible');
+            } else {
+                backToTopButton.classList.remove('visible');
+            }
+        });
+        
+        backToTopButton.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        // 平滑滚动到锚点
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // 导航高亮
+        const sections = document.querySelectorAll('.section[id]');
+        const navLinks = document.querySelectorAll('.nav-menu a[href^="#"]');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (pageYOffset >= sectionTop - 200) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        // 页面加载完成后的初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('GBase AI監視プラットフォーム開発計画書が読み込まれました');
+        });
+    </script>
+</body>
+</html>

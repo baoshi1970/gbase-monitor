@@ -1,0 +1,40 @@
+{
+  "title": "Conversation Quality Metrics",
+  "metrics": {
+    "resolutionRate": "Session Resolution Rate",
+    "negativeFeedbackRate": "Negative Feedback Rate",
+    "escalationRate": "Human Escalation Rate",
+    "noAnswerRate": "No Answer Reply Rate",
+    "qualityScore": "Overall Quality Score"
+  },
+  "stats": {
+    "current": "Current",
+    "target": "Target",
+    "trend": "Trend",
+    "change": "Change",
+    "improved": "Improved",
+    "declined": "Declined",
+    "stable": "Stable"
+  },
+  "timeRange": {
+    "realtime": "Real-time",
+    "today": "Today",
+    "yesterday": "Yesterday",
+    "last7days": "Last 7 days",
+    "last30days": "Last 30 days",
+    "lastMonth": "Last month",
+    "custom": "Custom"
+  },
+  "categories": {
+    "technical": "Technical Issues",
+    "business": "Business Inquiry",
+    "product": "Product Usage",
+    "other": "Other"
+  },
+  "analysis": {
+    "regionComparison": "Region Comparison",
+    "categoryBreakdown": "Category Breakdown",
+    "trendAnalysis": "Trend Analysis",
+    "correlationAnalysis": "Correlation Analysis"
+  }
+}

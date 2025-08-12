@@ -1,0 +1,50 @@
+{
+  "appName": "GBase Monitor",
+  "appDescription": "AI Conversation Service Monitoring & Analysis Platform",
+  "menu": {
+    "dashboard": "Dashboard",
+    "qualityMetrics": "Conversation Quality Metrics",
+    "overview": "Overview",
+    "userAnalysis": "User Behavior Analysis",
+    "reports": "Reports",
+    "settings": "Settings"
+  },
+  "common": {
+    "search": "Search",
+    "filter": "Filter",
+    "export": "Export",
+    "refresh": "Refresh",
+    "save": "Save",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "delete": "Delete",
+    "edit": "Edit",
+    "view": "View",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "loading": "Loading...",
+    "noData": "No Data",
+    "error": "Error",
+    "success": "Success"
+  },
+  "auth": {
+    "login": "Login",
+    "logout": "Logout",
+    "username": "Username",
+    "password": "Password",
+    "rememberMe": "Remember me",
+    "forgotPassword": "Forgot password?",
+    "loginSuccess": "Login successful",
+    "loginFailed": "Login failed",
+    "pleaseEnterUsername": "Please enter username",
+    "pleaseEnterPassword": "Please enter password"
+  },
+  "header": {
+    "notifications": "Notifications",
+    "profile": "Profile",
+    "settings": "Settings",
+    "logout": "Logout",
+    "language": "Language"
+  }
+}

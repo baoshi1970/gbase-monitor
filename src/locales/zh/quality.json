@@ -1,0 +1,40 @@
+{
+  "title": "对话品质指标",
+  "metrics": {
+    "resolutionRate": "Session解决率",
+    "negativeFeedbackRate": "负反馈率",
+    "escalationRate": "人工转接率",
+    "noAnswerRate": "无答案回复率",
+    "qualityScore": "综合质量得分"
+  },
+  "stats": {
+    "current": "当前值",
+    "target": "目标值",
+    "trend": "趋势",
+    "change": "变化",
+    "improved": "改善",
+    "declined": "下降",
+    "stable": "稳定"
+  },
+  "timeRange": {
+    "realtime": "实时",
+    "today": "今日",
+    "yesterday": "昨日",
+    "last7days": "近7天",
+    "last30days": "近30天",
+    "lastMonth": "上月",
+    "custom": "自定义"
+  },
+  "categories": {
+    "technical": "技术问题",
+    "business": "商务咨询",
+    "product": "产品使用",
+    "other": "其他"
+  },
+  "analysis": {
+    "regionComparison": "地域对比",
+    "categoryBreakdown": "分类统计",
+    "trendAnalysis": "趋势分析",
+    "correlationAnalysis": "相关性分析"
+  }
+}

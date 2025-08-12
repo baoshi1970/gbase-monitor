@@ -1,0 +1,108 @@
+/* 自定义侧边栏菜单样式 */
+.ant-menu-dark {
+  background: transparent !important;
+}
+
+.ant-menu-dark .ant-menu-item {
+  margin: 4px 12px !important;
+  border-radius: 8px !important;
+  padding-left: 16px !important;
+  height: 44px !important;
+  line-height: 44px !important;
+  transition: all 0.3s ease !important;
+}
+
+.ant-menu-dark .ant-menu-submenu {
+  margin: 4px 12px !important;
+}
+
+.ant-menu-dark .ant-menu-submenu > .ant-menu-submenu-title {
+  border-radius: 8px !important;
+  padding-left: 16px !important;
+  height: 44px !important;
+  line-height: 44px !important;
+  margin: 0 !important;
+  transition: all 0.3s ease !important;
+}
+
+.ant-menu-dark .ant-menu-item:hover,
+.ant-menu-dark .ant-menu-submenu-title:hover {
+  background-color: rgba(59, 130, 246, 0.1) !important;
+  color: #60a5fa !important;
+}
+
+.ant-menu-dark .ant-menu-item-selected {
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%) !important;
+  color: white !important;
+  font-weight: 500 !important;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3) !important;
+}
+
+.ant-menu-dark .ant-menu-submenu-selected > .ant-menu-submenu-title {
+  color: #60a5fa !important;
+  background-color: rgba(59, 130, 246, 0.1) !important;
+}
+
+.ant-menu-dark .ant-menu-sub .ant-menu-item {
+  background: transparent !important;
+  padding-left: 40px !important;
+  height: 36px !important;
+  line-height: 36px !important;
+  margin: 2px 12px !important;
+  border-radius: 6px !important;
+}
+
+.ant-menu-dark .ant-menu-sub .ant-menu-item:hover {
+  background-color: rgba(59, 130, 246, 0.08) !important;
+  color: #93c5fd !important;
+}
+
+.ant-menu-dark .ant-menu-sub .ant-menu-item-selected {
+  background: linear-gradient(
+    135deg,
+    rgba(59, 130, 246, 0.8) 0%,
+    rgba(29, 78, 216, 0.8) 100%
+  ) !important;
+  color: white !important;
+  font-weight: 500 !important;
+}
+
+/* 收缩状态下的样式 */
+.ant-menu-inline-collapsed .ant-menu-item {
+  padding-left: 16px !important;
+  margin: 4px 8px !important;
+}
+
+.ant-menu-inline-collapsed .ant-menu-submenu {
+  margin: 4px 8px !important;
+}
+
+/* 图标样式 */
+.ant-menu-dark .ant-menu-item .anticon,
+.ant-menu-dark .ant-menu-submenu-title .anticon {
+  font-size: 16px !important;
+  color: inherit !important;
+}
+
+/* 箭头样式 */
+.ant-menu-dark .ant-menu-submenu-arrow {
+  color: inherit !important;
+}
+
+/* 滚动条样式 */
+.ant-layout-sider::-webkit-scrollbar {
+  width: 6px;
+}
+
+.ant-layout-sider::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.ant-layout-sider::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
+}
+
+.ant-layout-sider::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
