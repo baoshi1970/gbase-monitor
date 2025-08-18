@@ -11,6 +11,9 @@ import {
   Space,
   Tag,
   Progress,
+  Button,
+  message,
+  Switch,
 } from 'antd';
 import {
   RiseOutlined,
@@ -19,6 +22,9 @@ import {
   LineChartOutlined,
   BarChartOutlined,
   ReloadOutlined,
+  DownloadOutlined,
+  PlayCircleOutlined,
+  PauseCircleOutlined,
 } from '@ant-design/icons';
 import { TrendChart, BarChart, GaugeChart } from '../../components';
 import TimeRangeSelector, { type TimeRangeValue } from '../../components/TimeRangeSelector';
@@ -40,6 +46,10 @@ const ResolutionRate: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [selectedRegion, setSelectedRegion] = useState<string>('all');
 
+  // 自动刷新状态
+  const [autoRefresh, setAutoRefresh] = useState(false);
+  const [refreshInterval, setRefreshInterval] = useState(30000); // 30秒
+
   // 获取解决率数据
   const {
     data,
@@ -53,14 +63,55 @@ const ResolutionRate: React.FC = () => {
   });
 
   // 处理刷新
-  const handleRefresh = () => {
-    refetch();
+  const handleRefresh = async () => {
+    try {
+      await refetch();
+      message.success('数据刷新成功');
+    } catch (err) {
+      message.error('数据刷新失败');
+    }
+  };
+
+  // 处理数据导出
+  const handleExport = () => {
+    if (!data) {
+      message.warning('暂无数据可导出');
+      return;
+    }
+
+    const exportData = {
+      timeRange,
+      filters: { category: selectedCategory, region: selectedRegion },
+      data,
+      exportTime: new Date().toISOString(),
+    };
+
+    const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `resolution-rate-${dayjs().format('YYYY-MM-DD')}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+
+    message.success('Session解决率数据已导出');
   };
 
   // 处理时间范围变化
   const handleTimeRangeChange = (newTimeRange: TimeRangeValue) => {
     setTimeRange(newTimeRange);
   };
+
+  // 自动刷新效果
+  React.useEffect(() => {
+    if (!autoRefresh) return;
+
+    const interval = setInterval(() => {
+      refetch();
+    }, refreshInterval);
+
+    return () => clearInterval(interval);
+  }, [autoRefresh, refreshInterval, refetch]);
 
   if (error) {
     return (
@@ -96,11 +147,31 @@ const ResolutionRate: React.FC = () => {
             监控AI对话的解决效果，分析不同维度的解决率表现
           </Text>
         </div>
-        <ReloadOutlined 
-          onClick={handleRefresh}
-          className="text-lg cursor-pointer hover:text-blue-500 transition-colors"
-          spin={loading}
-        />
+        <Space>
+          <div className="flex items-center space-x-2">
+            <Switch
+              checked={autoRefresh}
+              onChange={setAutoRefresh}
+              checkedChildren={<PlayCircleOutlined />}
+              unCheckedChildren={<PauseCircleOutlined />}
+            />
+            <Text type="secondary">自动刷新</Text>
+          </div>
+          <Button 
+            icon={<DownloadOutlined />} 
+            onClick={handleExport}
+            disabled={loading || !data}
+          >
+            导出数据
+          </Button>
+          <Button 
+            icon={<ReloadOutlined spin={loading} />} 
+            onClick={handleRefresh}
+            loading={loading}
+          >
+            手动刷新
+          </Button>
+        </Space>
       </div>
 
       {/* 时间范围和筛选器 */}

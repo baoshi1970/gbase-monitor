@@ -1,3 +1,4 @@
+export { default as QualityOverview } from './QualityOverview';
 export { default as ResolutionRate } from './ResolutionRate';
 export { default as NegativeFeedback } from './NegativeFeedback';
 export { default as EscalationRate } from './EscalationRate';

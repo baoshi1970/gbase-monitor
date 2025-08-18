@@ -1,6 +1,6 @@
 import React from 'react';
 import { Typography } from 'antd';
-import { BaseChart } from '../../../components/Charts/BaseChart';
+import BaseChart from '../../../components/Charts/BaseChart';
 import type { 
   SystemHealthResponse, 
   ResolutionRateResponse, 

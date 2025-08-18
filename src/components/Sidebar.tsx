@@ -36,6 +36,10 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed }) => {
       label: t('menu.qualityMetrics'),
       children: [
         {
+          key: '/quality-metrics',
+          label: '总览',
+        },
+        {
           key: '/quality-metrics/resolution-rate',
           label: t('metrics.resolutionRate', { ns: 'quality' }),
         },
@@ -78,16 +82,20 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed }) => {
       label: t('menu.userAnalysis'),
       children: [
         {
-          key: '/user-analysis/domain',
-          label: '邮件域名分析',
+          key: '/user-analysis',
+          label: '总览',
         },
         {
-          key: '/user-analysis/key-customers',
-          label: '关键客户',
+          key: '/user-analysis/activity',
+          label: '用户活跃度',
+        },
+        {
+          key: '/user-analysis/domain',
+          label: '企业域名分析',
         },
         {
           key: '/user-analysis/behavior',
-          label: '行为模式',
+          label: '行为路径',
         },
       ],
     },
@@ -97,20 +105,20 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed }) => {
       label: t('menu.reports'),
       children: [
         {
-          key: '/reports/daily',
-          label: '日次报告',
+          key: '/reports/overview',
+          label: '报表管理中心',
         },
         {
-          key: '/reports/weekly',
-          label: '周次报告',
+          key: '/reports/templates',
+          label: '报表模板',
         },
         {
-          key: '/reports/ai-effectiveness',
-          label: 'AI效果报告',
+          key: '/reports/designer',
+          label: '自定义设计器',
         },
         {
-          key: '/reports/market',
-          label: '市场分析报告',
+          key: '/reports/schedule',
+          label: '定时报表',
         },
       ],
     },
