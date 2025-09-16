@@ -1,0 +1,27 @@
+# 本地开发用docker-compose配置
+# 适用于网络受限或离线开发环境
+
+services:
+  gbase-monitor:
+    build:
+      context: .
+      dockerfile: Dockerfile.local
+    container_name: gbase-monitor-local
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
+    networks:
+      - gbase-network
+    environment:
+      - NODE_ENV=production
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3000"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+networks:
+  gbase-network:
+    driver: bridge
+    name: gbase-monitor-network

@@ -1,0 +1,82 @@
+version: '3.8'
+
+services:
+  # GBase监控平台前端
+  gbase-monitor:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: gbase-monitor-app
+    ports:
+      - "80:80"
+      - "443:443"
+    restart: unless-stopped
+    networks:
+      - gbase-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+  # 可选：添加后端API服务（当有真实API时取消注释）
+  # gbase-backend:
+  #   image: your-backend-image:latest
+  #   container_name: gbase-monitor-backend
+  #   ports:
+  #     - "3000:3000"
+  #   environment:
+  #     - NODE_ENV=production
+  #     - DB_HOST=database
+  #     - DB_PORT=5432
+  #     - DB_NAME=gbase_monitor
+  #     - DB_USER=admin
+  #     - DB_PASSWORD=password
+  #   restart: unless-stopped
+  #   networks:
+  #     - gbase-network
+  #   depends_on:
+  #     - database
+
+  # 可选：数据库服务（当需要持久化数据时取消注释）
+  # database:
+  #   image: postgres:15-alpine
+  #   container_name: gbase-monitor-db
+  #   environment:
+  #     POSTGRES_DB: gbase_monitor
+  #     POSTGRES_USER: admin
+  #     POSTGRES_PASSWORD: password
+  #   volumes:
+  #     - postgres_data:/var/lib/postgresql/data
+  #     - ./database/init:/docker-entrypoint-initdb.d
+  #   ports:
+  #     - "5432:5432"
+  #   restart: unless-stopped
+  #   networks:
+  #     - gbase-network
+
+  # 可选：Redis缓存服务
+  # redis:
+  #   image: redis:7-alpine
+  #   container_name: gbase-monitor-redis
+  #   ports:
+  #     - "6379:6379"
+  #   restart: unless-stopped
+  #   networks:
+  #     - gbase-network
+  #   command: redis-server --appendonly yes
+  #   volumes:
+  #     - redis_data:/data
+
+networks:
+  gbase-network:
+    driver: bridge
+    name: gbase-monitor-network
+
+# 可选：持久化存储卷
+# volumes:
+#   postgres_data:
+#     driver: local
+#   redis_data:
+#     driver: local
