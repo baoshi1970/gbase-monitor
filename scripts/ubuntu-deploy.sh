@@ -181,7 +181,11 @@ deploy_application() {
     # 给脚本执行权限
     chmod +x scripts/docker-dev.sh
 
-    # 构建并启动应用
+    # 首先尝试配置Docker镜像源
+    configure_docker_mirrors
+
+    # 构建并启动应用 - 使用本地配置避免网络问题
+    log_info "使用本地配置构建应用..."
     docker compose -f docker-compose.local.yml up -d --build
 
     # 等待启动
@@ -193,6 +197,39 @@ deploy_application() {
     else
         log_warning "应用可能还在启动中"
     fi
+}
+
+# 配置Docker镜像源
+configure_docker_mirrors() {
+    log_info "配置Docker镜像源以解决网络问题..."
+
+    # 创建docker配置目录
+    sudo mkdir -p /etc/docker
+
+    # 配置国内镜像源
+    sudo tee /etc/docker/daemon.json > /dev/null << 'EOF'
+{
+    "registry-mirrors": [
+        "https://docker.mirrors.ustc.edu.cn",
+        "https://hub-mirror.c.163.com",
+        "https://mirror.baidubce.com",
+        "https://ccr.ccs.tencentyun.com"
+    ],
+    "max-concurrent-downloads": 10,
+    "log-driver": "json-file",
+    "log-level": "warn",
+    "log-opts": {
+        "max-size": "10m",
+        "max-file": "3"
+    }
+}
+EOF
+
+    # 重启Docker服务
+    sudo systemctl daemon-reload
+    sudo systemctl restart docker
+
+    log_success "Docker镜像源配置完成"
 }
 
 # 创建系统服务
